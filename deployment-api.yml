@@ -17,7 +17,6 @@ spec:
           image: api-redis:5
           env:
             - name: REDIS_HOST
-              # value: redis-service # same name as redis SERVICE
               value: redis://redis-service:6379 # same name as redis SERVICE
           resources:
             limits:

@@ -1,24 +1,19 @@
-# KUBERNETES-EXAMPLE:  
+# KUBERNETES-API-REDIS-EXAMPLE:  
 
-Api (node)
-From wsl linux console
+Api (node) + Redis (database)
 
-## KUBERNETE SCHEMA
-Kubernetes
-    Ingress
-        Service: Load Balancer (round robin)
-            Deployment
-                Pod
-                    Container
+## API
 
-```bash
-minikube start
-minikube docker-env
-eval $(minikube docker-env)
-kubectl apply -f service.yml
-minikube tunnel
-```
+Service type: LoadBalancer  
+Port: 3000  
+Env: REDIS_HOST = redis://redis-service:6379  
+Pod: 1 container replicated 3 times  
 
-## Visit
+## REDIS
 
-http://localhost:3000
+Service type: ClusterIP  
+Port: 6379  
+Pod: 2 containers (redis and busybox) replicated 1 times  
+
+Busybox is a container with ubuntu and tools to develop
+
