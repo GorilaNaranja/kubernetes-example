@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: felipe3-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  labels:
+    name: felipe3-ingress
+spec:
+  rules:
+    - host: felipe3.local
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/api(/|$)(.*)"
+            backend:
+              service:
+                name: api-service
+                port:
+                  number: 3000
+          - pathType: Prefix
+            path: "/api-redis(/|$)(.*)"
+            backend:
+              service:
+                name: api-redis-service
+                port:
+                  number: 3000

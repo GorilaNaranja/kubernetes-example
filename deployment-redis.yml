@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: redis-pod
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -15,18 +15,30 @@ spec:
       containers:
         - name: redis-deployment-cnt-1
           image: redis
+          command:
+            - "redis-server"
+            - "--save"
+            - "60"
+            - "1"
           resources:
             limits:
               memory: "128Mi"
               cpu: "500m"
           ports:
             - containerPort: 6379
-        - name: redis-deployment-busybox
-          image: busybox
-          command:
-            - sleep
-            - "30"
-          resources:
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
+          volumeMounts:
+            - mountPath: "/data"
+              name: data-volume
+        # - name: redis-deployment-busybox
+        #   image: busybox
+        #   command:
+        #     - sleep
+        #     - "30"
+        #   resources:
+        #     limits:
+        #       memory: "128Mi"
+        #       cpu: "500m"
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: redis-1gb
